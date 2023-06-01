@@ -1,0 +1,17 @@
+{
+    "version": "1.0.0",
+    "author": {"name":"mb","email":"mb@autodesk.com"},
+    "resources": [
+        {
+            "resourceId": "rId0",
+            "sourceType": 5,
+            "file": "resources/test40524EF7EB0868944B385E69F04CAC57D8E.pbiviz.json"
+        }
+    ],
+    "visual": {"name":"test405","displayName":"test405","guid":"test40524EF7EB0868944B385E69F04CAC57D8E","visualClassName":"Visual","version":"1.0.0","description":"na","supportUrl":"https://github.com/wallabyway","gitHubUrl":"https://github.com/wallabyway"},
+    "metadata": {
+        "pbivizjson": {
+            "resourceId": "rId0"
+        }
+    }  
+}

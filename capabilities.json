@@ -1,0 +1,27 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "elementID",
+            "name": "elementID",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "urn",
+            "name": "urn",
+            "kind": "Grouping"
+        }
+    ],
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                    "select": [
+                        {"for": { "in": "elementID.1" }},
+                        {"for": { "in": "urn" }}
+                    ]
+                }
+            }
+        }
+    ] 
+
+}
