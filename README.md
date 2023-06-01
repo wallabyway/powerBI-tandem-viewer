@@ -1,11 +1,13 @@
-# powerBI-tandem-viewer
+# powerBI-Tandem-Viewer
 
 This is the visual component for Tandem Viewer, embedded inside PowerBi.  
+
+**DEMO**: https://app.powerbi.com/groups/me/reports/7cbd742c-5dab-451a-9f20-7d38e9c0e456/ReportSection?experience=power-bi
 
 <br><hr>
 
 ## NOTES
-- It uses two Legged Auth (see hello world Tandem example)
+- It uses two Legged Auth (see [hello world](https://github.com/wallabyway/tandem-api-hello-world) Tandem example)
 - A Lambda service provides tokens
 - The tokens are locked to the Service Account permissions
 
