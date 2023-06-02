@@ -54,14 +54,12 @@ export class Visual implements IVisual {
         this.tandem = new tandemViewer();
         await this.tandem.init(token);
         const allFacilities = await this.tandem.fetchFacilities();
-        console.log(allFacilities);
-        await this.tandem.openFacility(allFacilities[1]);        
+        await this.tandem.openFacility(allFacilities[2]);        
     }
 
     private async getAccessToken(): Promise<string> {
         const endpoint = 'https://f2iv2mhpbebrhrkfsnn2lvloxq0janqb.lambda-url.us-west-2.on.aws';
         const token = await (await fetch(endpoint)).text();
-        console.log(token);
         return token;
     }
 
@@ -72,42 +70,24 @@ export class Visual implements IVisual {
             link.type = 'text/css';
             link.rel = 'stylesheet';
             document.head.appendChild(link);
+
+            let elt = document.createElement('script');
+            elt.src = 'https://tandem.autodesk.com/viewer/viewer3D.min.js';
+            document.head.appendChild(elt);
+
             link.onload = () => { 
-                let elt = document.createElement('script');
-                elt.src = 'https://tandem.autodesk.com/viewer/viewer3D.min.js';
-                document.head.appendChild(elt);
                 elt.onload = () => { resolve() }    
             }
-
-            
-            // let el = document.createElement('img');
-            // el.src = 'https://f2iv2mhpbebrhrkfsnn2lvloxq0janqb.lambda-url.us-west-2.on.aws';
-            // document.body.appendChild(el);
-            //el.onload = () => { resolve() }
         })
     }
 
-
     public update(options: VisualUpdateOptions) {
-        if((options.type == 4) ) //resizing or moving
-                return;
-        //this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        this.tandem.updateSelection(options.dataViews[0].table.rows);
-        console.log(options.dataViews[0].table.rows)
-    }
-
-    private static parseSettings(dataView: DataView): VisualSettings {
-        return <VisualSettings>VisualSettings.parse(dataView);
-    }
-
-    /**
-     * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
-     * objects and properties you want to expose to the users in the property pane.
-     *
-     */
-    public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
-        return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
-    }
+        if((options.type != 2) ) return; //ignore resizing or moving
+                
+        console.log("parseSettings");
+        console.log(options.dataViews[0]);                
+        this.tandem.updateVisibility(options.dataViews[0].table.rows);
+    }    
 }
 
 
@@ -133,9 +113,9 @@ class tandemViewer {
                     theme: 'light-theme',
                 });
                 this.viewer.start();
-                console.log("_access_token",_access_token)
                 av.endpoint.HTTP_REQUEST_HEADERS['Authorization'] = `Bearer ${_access_token}`;
                 this.app = new av.Private.DtApp({});
+                this.viewer.setGhosting(false);
                 resolve(this);
             });
     })}
@@ -150,21 +130,24 @@ class tandemViewer {
         this.app.displayFacility(facility, false, this.viewer);
     }
 
-    updateSelection ( list, type=1 ) {
-        // const result = {};
-        // list.forEach( async ([urn, elementId]) => {
-        //     if (!result[urn]) result[urn] = [];
-        //     result[urn].push(elementId);
-        // });
-        //this.viewer.clearSelection();
-        this.app.currentFacility.modelsList.map ( model => model.setAllVisibility(false));
+    updateVisibility ( list:any ) {
+        // This is the fastest visibility switching technique for multi-model
+        const isNoneSelected = (list.length == 0);
 
-        list.map( async (i) => {
-            const model = this.app.currentFacility.modelsList.filter((m) => m._modelId == i[0])
-            const dbid = await model[0].getDbIdsFromElementIds([ i[1] ]);
-            model[0].visibilityManager.setVisibilityOnNode( dbid, true);
-            //model[0].selector.toggleSelection( dbid, type);
-        } )
+        // 1. hide everything.
+        this.app.currentFacility.modelsList.map ( (model:any) => model.setAllVisibility(isNoneSelected));
+
+        // 2. Set elements to visible, per model  
+        if (isNoneSelected) return;
+        this.app.currentFacility.modelsList.map ( (model:any) => {
+            list.map( async (i:any) => {
+                const [urn, elementId] = i;
+                if (model._modelId == urn) {
+                    const dbid = await model.getDbIdsFromElementIds([ elementId ]);
+                    model.visibilityManager.setVisibilityOnNode( dbid, true);        
+                }
+            })
+        });
     }
         
 }

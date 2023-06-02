@@ -1,13 +1,8 @@
 {
     "dataRoles": [
         {
-            "displayName": "elementID",
+            "displayName": "drag URN and ElementID",
             "name": "elementID",
-            "kind": "Grouping"
-        },
-        {
-            "displayName": "urn",
-            "name": "urn",
             "kind": "Grouping"
         }
     ],
@@ -16,12 +11,12 @@
             "table": {
                 "rows": {
                     "select": [
-                        {"for": { "in": "elementID.1" }},
+                        {"for": { "in": "elementID" }},
                         {"for": { "in": "urn" }}
-                    ]
+                    ],
+                    "dataReductionAlgorithm": { "sample": { "count": 64000 } }
                 }
             }
         }
-    ] 
-
+    ]
 }
