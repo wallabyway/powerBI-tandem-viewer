@@ -42,3 +42,10 @@ From the diagram:
 ## RUN
 
 Click on elements in the chart to see the viewer change appearance
+
+
+## FURTHER REFERENCES
+
+- https://github.com/petrbroz/endymion-next/tree/master/visuals/cached-derivs-viewer-visual
+- https://github.com/petrbroz/endymion-next
+- https://aps.autodesk.com/en/docs/endymion/v1/developers_guide/setup/
