@@ -4,6 +4,10 @@ This is the visual component for Tandem Viewer, embedded inside PowerBi.
 
 **DEMO**: https://app.powerbi.com/groups/me/reports/7cbd742c-5dab-451a-9f20-7d38e9c0e456/ReportSection?experience=power-bi
 
+<video src="https://github.com/wallabyway/powerBI-tandem-viewer/assets/440241/bf975446-652e-4754-b1af-84fc974078b3"></video>
+
+
+
 <br><hr>
 
 ## NOTES
